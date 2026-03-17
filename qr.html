@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QRコード作成 - 無料QRコード生成ツール | NKSAPPLAB</title>
+<meta name="description" content="無料でQRコードを作成・生成できるオンラインツール。URL、テキスト、メール、電話番号、WiFi、vCardに対応。PNG・SVGでダウンロード可能。一括生成モードあり。">
+<meta name="keywords" content="QRコード,作成,生成,無料,QR code,generator,オンライン">
+<meta property="og:title" content="QRコード作成 - 無料QRコード生成ツール | NKSAPPLAB">
+<meta property="og:description" content="無料でQRコードを即座に作成。URL、テキスト、メール、WiFi等に対応。ダウンロード無料。">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://nksapplab.com/qr-generator.html">
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#a78bfa;--accent-dark:#7c3aed;--bg:#f9fafb;--card:#fff;--text:#1f2937;--text-secondary:#6b7280;--border:#e5e7eb;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+a{color:var(--accent-dark);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Header */
+.header{background:var(--card);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:700;color:var(--accent-dark)}
+.logo span{color:var(--text)}
+.header-nav{display:flex;gap:16px;font-size:14px}
+
+/* Hero */
+.hero{text-align:center;padding:48px 20px 32px;max-width:700px;margin:0 auto}
+.hero h1{font-size:clamp(24px,5vw,36px);font-weight:800;margin-bottom:12px}
+.hero h1 .highlight{color:var(--accent-dark)}
+.hero p{color:var(--text-secondary);font-size:16px}
+
+/* Main layout */
+.main{max-width:1200px;margin:0 auto;padding:0 20px 60px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+@media(max-width:768px){.main{grid-template-columns:1fr;gap:24px}}
+
+/* Cards */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;border:1px solid var(--border)}
+.card h2{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card h2 .icon{width:24px;height:24px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0}
+
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.tab{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:13px;font-weight:500;transition:.15s}
+.tab:hover{border-color:var(--accent)}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Form */
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text-secondary)}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;transition:.15s;background:var(--card);color:var(--text);font-family:inherit}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(167,139,250,.2)}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.form-row{grid-template-columns:1fr}}
+
+/* Color inputs */
+.color-input-wrap{display:flex;align-items:center;gap:8px}
+.color-input-wrap input[type="color"]{width:40px;height:36px;border:1px solid var(--border);border-radius:6px;padding:2px;cursor:pointer;background:none}
+.color-input-wrap input[type="text"]{flex:1}
+
+/* Preview */
+.preview-area{display:flex;flex-direction:column;align-items:center;position:sticky;top:80px}
+.qr-display{background:#fff;border-radius:var(--radius);padding:24px;display:flex;align-items:center;justify-content:center;min-height:280px;margin-bottom:20px;border:2px dashed var(--border);width:100%;transition:.15s}
+.qr-display.has-qr{border:1px solid var(--border);border-style:solid}
+.qr-display canvas{max-width:100%;height:auto!important}
+.qr-placeholder{text-align:center;color:var(--text-secondary)}
+.qr-placeholder .big-icon{font-size:48px;margin-bottom:8px;opacity:.3}
+.qr-placeholder p{font-size:14px}
+
+/* Buttons */
+.btn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.btn-primary{background:var(--accent-dark);color:#fff}
+.btn-primary:hover{background:#6d28d9}
+.btn-secondary{background:var(--bg);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--border)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;width:100%;justify-content:center}
+
+/* Batch mode */
+.batch-section{max-width:1200px;margin:0 auto;padding:0 20px 60px}
+.batch-toggle{display:flex;align-items:center;gap:8px;margin-bottom:16px;cursor:pointer;font-size:14px;font-weight:600;color:var(--accent-dark)}
+.batch-toggle input{display:none}
+.batch-toggle .toggle-track{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;transition:.2s;flex-shrink:0}
+.batch-toggle .toggle-track::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:2px;left:2px;transition:.2s}
+.batch-toggle input:checked+.toggle-track{background:var(--accent-dark)}
+.batch-toggle input:checked+.toggle-track::after{left:20px}
+.batch-content{display:none}
+.batch-content.show{display:block}
+.batch-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:20px}
+.batch-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.batch-item canvas{max-width:100%;margin-bottom:8px}
+.batch-item p{font-size:12px;color:var(--text-secondary);word-break:break-all;margin-bottom:8px}
+.batch-item .btn{font-size:12px;padding:6px 12px}
+
+/* Promo */
+.promo-section{max-width:1200px;margin:0 auto;padding:0 20px 60px}
+.promo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.promo-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;transition:.15s}
+.promo-card:hover{border-color:var(--accent);box-shadow:0 4px 12px rgba(167,139,250,.15)}
+.promo-card h3{font-size:15px;margin-bottom:6px}
+.promo-card p{font-size:13px;color:var(--text-secondary);margin-bottom:12px}
+
+/* FAQ */
+.faq-section{max-width:800px;margin:0 auto;padding:0 20px 60px}
+.faq-section h2{text-align:center;font-size:22px;margin-bottom:24px}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
+.faq-item summary{padding:16px;font-weight:600;cursor:pointer;font-size:14px;list-style:none;display:flex;align-items:center;justify-content:space-between}
+.faq-item summary::after{content:'+';font-size:18px;color:var(--accent-dark)}
+.faq-item[open] summary::after{content:'-'}
+.faq-item p{padding:0 16px 16px;font-size:14px;color:var(--text-secondary)}
+
+/* Footer */
+.footer{background:var(--card);border-top:1px solid var(--border);padding:32px 20px;text-align:center}
+.footer p{font-size:13px;color:var(--text-secondary)}
+.footer-links{display:flex;gap:16px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.footer-links a{font-size:13px}
+
+/* Hidden SVG container */
+#svg-container{position:absolute;left:-9999px;top:-9999px}
+</style>
+</head>
+<body>
+
+<header class="header">
+<div class="header-inner">
+<div class="logo">NKS<span>APPLAB</span></div>
+<nav class="header-nav">
+<a href="https://nksapplab.com">ホーム</a>
+<a href="https://nksapplab.com/tools">ツール一覧</a>
+</nav>
+</div>
+</header>
+
+<section class="hero">
+<h1><span class="highlight">QRコード</span>作成ツール</h1>
+<p>URL・テキスト・WiFi・連絡先など、あらゆるデータのQRコードを無料で即座に生成。PNG・SVGでダウンロード可能。</p>
+</section>
+
+<div class="main">
+<!-- Left: Input -->
+<div class="card">
+<h2><span class="icon">&#9998;</span> データ入力</h2>
+
+<div class="tabs" id="type-tabs">
+<button class="tab active" data-type="url">URL</button>
+<button class="tab" data-type="text">テキスト</button>
+<button class="tab" data-type="email">メール</button>
+<button class="tab" data-type="phone">電話番号</button>
+<button class="tab" data-type="wifi">WiFi</button>
+<button class="tab" data-type="vcard">vCard</button>
+</div>
+
+<!-- URL -->
+<div class="type-panel" id="panel-url">
+<div class="form-group">
+<label>URL</label>
+<input type="url" id="input-url" placeholder="https://example.com" value="">
+</div>
+</div>
+
+<!-- Text -->
+<div class="type-panel" id="panel-text" style="display:none">
+<div class="form-group">
+<label>テキスト</label>
+<textarea id="input-text" placeholder="QRコードに埋め込むテキストを入力"></textarea>
+</div>
+</div>
+
+<!-- Email -->
+<div class="type-panel" id="panel-email" style="display:none">
+<div class="form-group">
+<label>メールアドレス</label>
+<input type="email" id="input-email-addr" placeholder="example@email.com">
+</div>
+<div class="form-group">
+<label>件名（任意）</label>
+<input type="text" id="input-email-subject" placeholder="お問い合わせ">
+</div>
+<div class="form-group">
+<label>本文（任意）</label>
+<textarea id="input-email-body" placeholder="メール本文"></textarea>
+</div>
+</div>
+
+<!-- Phone -->
+<div class="type-panel" id="panel-phone" style="display:none">
+<div class="form-group">
+<label>電話番号</label>
+<input type="tel" id="input-phone" placeholder="090-1234-5678">
+</div>
+</div>
+
+<!-- WiFi -->
+<div class="type-panel" id="panel-wifi" style="display:none">
+<div class="form-group">
+<label>ネットワーク名（SSID）</label>
+<input type="text" id="input-wifi-ssid" placeholder="MyWiFi">
+</div>
+<div class="form-group">
+<label>パスワード</label>
+<input type="text" id="input-wifi-pass" placeholder="password123">
+</div>
+<div class="form-group">
+<label>暗号化方式</label>
+<select id="input-wifi-enc">
+<option value="WPA">WPA/WPA2</option>
+<option value="WEP">WEP</option>
+<option value="nopass">なし（オープン）</option>
+</select>
+</div>
+<div class="form-group">
+<label style="display:flex;align-items:center;gap:6px">
+<input type="checkbox" id="input-wifi-hidden"> 非公開ネットワーク
+</label>
+</div>
+</div>
+
+<!-- vCard -->
+<div class="type-panel" id="panel-vcard" style="display:none">
+<div class="form-row">
+<div class="form-group">
+<label>姓</label>
+<input type="text" id="input-vcard-ln" placeholder="山田">
+</div>
+<div class="form-group">
+<label>名</label>
+<input type="text" id="input-vcard-fn" placeholder="太郎">
+</div>
+</div>
+<div class="form-group">
+<label>会社名</label>
+<input type="text" id="input-vcard-org" placeholder="株式会社サンプル">
+</div>
+<div class="form-group">
+<label>電話番号</label>
+<input type="tel" id="input-vcard-tel" placeholder="090-1234-5678">
+</div>
+<div class="form-group">
+<label>メール</label>
+<input type="email" id="input-vcard-email" placeholder="taro@example.com">
+</div>
+<div class="form-group">
+<label>URL</label>
+<input type="url" id="input-vcard-url" placeholder="https://example.com">
+</div>
+</div>
+
+<hr style="border:none;border-top:1px solid var(--border);margin:20px 0">
+
+<h2><span class="icon">&#9881;</span> 設定</h2>
+
+<div class="form-row">
+<div class="form-group">
+<label>サイズ</label>
+<select id="size-select">
+<option value="200">小 (200px)</option>
+<option value="300" selected>中 (300px)</option>
+<option value="500">大 (500px)</option>
+<option value="custom">カスタム</option>
+</select>
+</div>
+<div class="form-group" id="custom-size-group" style="display:none">
+<label>カスタムサイズ (px)</label>
+<input type="number" id="custom-size" value="400" min="100" max="2000">
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-group">
+<label>誤り訂正レベル</label>
+<select id="ec-level">
+<option value="L">L（7%）- 小さいコードに</option>
+<option value="M" selected>M（15%）- 標準</option>
+<option value="Q">Q（25%）- 高品質</option>
+<option value="H">H（30%）- 最高品質</option>
+</select>
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-group">
+<label>前景色</label>
+<div class="color-input-wrap">
+<input type="color" id="fg-color" value="#000000">
+<input type="text" id="fg-color-text" value="#000000" maxlength="7">
+</div>
+</div>
+<div class="form-group">
+<label>背景色</label>
+<div class="color-input-wrap">
+<input type="color" id="bg-color" value="#ffffff">
+<input type="text" id="bg-color-text" value="#ffffff" maxlength="7">
+</div>
+</div>
+</div>
+</div>
+
+<!-- Right: Preview -->
+<div class="preview-area">
+<div class="card" style="width:100%">
+<h2><span class="icon">&#9673;</span> プレビュー</h2>
+<div class="qr-display" id="qr-display">
+<div class="qr-placeholder">
+<div class="big-icon">&#9634;</div>
+<p>左側にデータを入力すると<br>QRコードが生成されます</p>
+</div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" id="btn-download-png" disabled>&#11015; PNG ダウンロード</button>
+<button class="btn btn-secondary" id="btn-download-svg" disabled>&#11015; SVG ダウンロード</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Batch Mode -->
+<section class="batch-section">
+<div class="card">
+<label class="batch-toggle">
+<input type="checkbox" id="batch-toggle-input">
+<span class="toggle-track"></span>
+一括生成モード
+</label>
+<div class="batch-content" id="batch-content">
+<div class="form-group">
+<label>1行に1つずつデータを入力してください（URL、テキスト等）</label>
+<textarea id="batch-input" rows="8" placeholder="https://example.com&#10;https://google.com&#10;Hello World&#10;090-1234-5678"></textarea>
+</div>
+<button class="btn btn-primary" id="btn-batch-generate">一括生成</button>
+<button class="btn btn-secondary" id="btn-batch-download-all" style="display:none">すべてダウンロード (ZIP)</button>
+<div class="batch-results" id="batch-results"></div>
+</div>
+</div>
+</section>
+
+<!-- Promo -->
+<section class="promo-section">
+<div style="text-align:center;margin-bottom:24px">
+<h2 style="font-size:22px;font-weight:800">他の無料ツール・アプリ</h2>
+<p style="color:var(--text-secondary);font-size:14px;margin-top:4px">NKSAPPLABの便利なツールとアプリをチェック</p>
+</div>
+<div class="promo-grid">
+<a href="https://nksapplab.com/tools" class="promo-card" style="text-decoration:none;color:inherit">
+<h3>&#128295; Web ツール一覧</h3>
+<p>パスワード生成、文字数カウントなど便利な無料ツールを公開中</p>
+<span class="btn btn-secondary" style="font-size:13px">ツールを見る</span>
+</a>
+<a href="https://apps.apple.com/developer/id123456" class="promo-card" style="text-decoration:none;color:inherit">
+<h3>&#128241; iOS アプリ</h3>
+<p>App Storeで公開中のiOSアプリをチェック</p>
+<span class="btn btn-secondary" style="font-size:13px">アプリを見る</span>
+</a>
+<a href="https://nksapplab.com" class="promo-card" style="text-decoration:none;color:inherit">
+<h3>&#127968; NKSAPPLAB</h3>
+<p>個人開発者によるアプリ・ツール開発ラボ</p>
+<span class="btn btn-secondary" style="font-size:13px">サイトへ</span>
+</a>
+</div>
+</section>
+
+<!-- FAQ (SEO) -->
+<section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+<h2>よくある質問</h2>
+<details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<summary itemprop="name">このQRコード生成ツールは無料ですか？</summary>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">はい、完全に無料でご利用いただけます。会員登録も不要で、生成回数の制限もありません。生成したQRコードは商用利用も可能です。</p>
+</div>
+</details>
+<details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<summary itemprop="name">生成したQRコードに有効期限はありますか？</summary>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">いいえ、QRコード自体に有効期限はありません。QRコードはデータを画像としてエンコードしたものなので、画像が読み取れる限り永久に利用できます。ただし、URLをエンコードした場合、リンク先のWebサイトが閉鎖されると機能しなくなります。</p>
+</div>
+</details>
+<details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<summary itemprop="name">誤り訂正レベルとは何ですか？</summary>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">QRコードが汚れたり一部が隠れても読み取れるようにする機能です。L(7%)は最小限、M(15%)は標準、Q(25%)は高い復元力、H(30%)は最大の復元力を持ちます。レベルが高いほどQRコードが大きくなりますが、ロゴを重ねる場合はHがおすすめです。</p>
+</div>
+</details>
+<details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<summary itemprop="name">WiFi接続用のQRコードはどう使いますか？</summary>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">WiFiタブでSSID（ネットワーク名）とパスワードを入力してQRコードを生成します。スマートフォンのカメラでそのQRコードを読み取ると、自動的にWiFiに接続できます。カフェや店舗でのWiFi共有に便利です。</p>
+</div>
+</details>
+<details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+<summary itemprop="name">データはサーバーに送信されますか？</summary>
+<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">いいえ、すべての処理はお使いのブラウザ内で完結します。入力されたデータは外部サーバーに一切送信されません。安心してご利用ください。</p>
+</div>
+</details>
+</section>
+
+<footer class="footer">
+<div class="footer-links">
+<a href="https://nksapplab.com">NKSAPPLAB</a>
+<a href="https://nksapplab.com/tools">無料ツール</a>
+<a href="https://nksapplab.com/privacy">プライバシーポリシー</a>
+</div>
+<p>&copy; 2024-2026 NKSAPPLAB. All rights reserved.</p>
+</footer>
+
+<div id="svg-container"></div>
+
+<script>
+(function(){
+'use strict';
+
+// --- State ---
+let currentType = 'url';
+let debounceTimer = null;
+let currentQrData = '';
+
+// --- DOM refs ---
+const qrDisplay = document.getElementById('qr-display');
+const btnPng = document.getElementById('btn-download-png');
+const btnSvg = document.getElementById('btn-download-svg');
+const sizeSelect = document.getElementById('size-select');
+const customSizeGroup = document.getElementById('custom-size-group');
+const customSizeInput = document.getElementById('custom-size');
+const ecLevel = document.getElementById('ec-level');
+const fgColor = document.getElementById('fg-color');
+const fgColorText = document.getElementById('fg-color-text');
+const bgColor = document.getElementById('bg-color');
+const bgColorText = document.getElementById('bg-color-text');
+
+// --- Tab switching ---
+document.getElementById('type-tabs').addEventListener('click', function(e) {
+  const tab = e.target.closest('.tab');
+  if (!tab) return;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  currentType = tab.dataset.type;
+  document.querySelectorAll('.type-panel').forEach(p => p.style.display = 'none');
+  document.getElementById('panel-' + currentType).style.display = 'block';
+  scheduleGenerate();
+});
+
+// --- Size toggle ---
+sizeSelect.addEventListener('change', function() {
+  customSizeGroup.style.display = this.value === 'custom' ? '' : 'none';
+  scheduleGenerate();
+});
+customSizeInput.addEventListener('input', scheduleGenerate);
+
+// --- Color sync ---
+fgColor.addEventListener('input', function() { fgColorText.value = this.value; scheduleGenerate(); });
+fgColorText.addEventListener('input', function() { if (/^#[0-9a-fA-F]{6}$/.test(this.value)) { fgColor.value = this.value; scheduleGenerate(); } });
+bgColor.addEventListener('input', function() { bgColorText.value = this.value; scheduleGenerate(); });
+bgColorText.addEventListener('input', function() { if (/^#[0-9a-fA-F]{6}$/.test(this.value)) { bgColor.value = this.value; scheduleGenerate(); } });
+ecLevel.addEventListener('change', scheduleGenerate);
+
+// --- Input listeners ---
+document.querySelectorAll('.type-panel input, .type-panel textarea, .type-panel select').forEach(el => {
+  el.addEventListener('input', scheduleGenerate);
+  el.addEventListener('change', scheduleGenerate);
+});
+
+// --- Get QR data string ---
+function getQrData() {
+  switch (currentType) {
+    case 'url':
+      return document.getElementById('input-url').value.trim();
+    case 'text':
+      return document.getElementById('input-text').value;
+    case 'email': {
+      const addr = document.getElementById('input-email-addr').value.trim();
+      if (!addr) return '';
+      let mailto = 'mailto:' + addr;
+      const params = [];
+      const subj = document.getElementById('input-email-subject').value.trim();
+      const body = document.getElementById('input-email-body').value.trim();
+      if (subj) params.push('subject=' + encodeURIComponent(subj));
+      if (body) params.push('body=' + encodeURIComponent(body));
+      if (params.length) mailto += '?' + params.join('&');
+      return mailto;
+    }
+    case 'phone': {
+      const phone = document.getElementById('input-phone').value.trim();
+      return phone ? 'tel:' + phone : '';
+    }
+    case 'wifi': {
+      const ssid = document.getElementById('input-wifi-ssid').value.trim();
+      if (!ssid) return '';
+      const pass = document.getElementById('input-wifi-pass').value;
+      const enc = document.getElementById('input-wifi-enc').value;
+      const hidden = document.getElementById('input-wifi-hidden').checked;
+      // Escape special chars in WiFi string
+      const esc = s => s.replace(/([\\;:,"])/g, '\\$1');
+      let str = 'WIFI:T:' + enc + ';S:' + esc(ssid) + ';';
+      if (enc !== 'nopass' && pass) str += 'P:' + esc(pass) + ';';
+      if (hidden) str += 'H:true;';
+      str += ';';
+      return str;
+    }
+    case 'vcard': {
+      const ln = document.getElementById('input-vcard-ln').value.trim();
+      const fn = document.getElementById('input-vcard-fn').value.trim();
+      if (!ln && !fn) return '';
+      const org = document.getElementById('input-vcard-org').value.trim();
+      const tel = document.getElementById('input-vcard-tel').value.trim();
+      const email = document.getElementById('input-vcard-email').value.trim();
+      const url = document.getElementById('input-vcard-url').value.trim();
+      let v = 'BEGIN:VCARD\nVERSION:3.0\n';
+      v += 'N:' + ln + ';' + fn + ';;;\n';
+      v += 'FN:' + fn + ' ' + ln + '\n';
+      if (org) v += 'ORG:' + org + '\n';
+      if (tel) v += 'TEL:' + tel + '\n';
+      if (email) v += 'EMAIL:' + email + '\n';
+      if (url) v += 'URL:' + url + '\n';
+      v += 'END:VCARD';
+      return v;
+    }
+  }
+  return '';
+}
+
+function getSize() {
+  const val = sizeSelect.value;
+  if (val === 'custom') {
+    const c = parseInt(customSizeInput.value) || 300;
+    return Math.max(100, Math.min(2000, c));
+  }
+  return parseInt(val);
+}
+
+function getEcLevel() {
+  const map = { L: 1, M: 0, Q: 3, H: 2 }; // qrcode-generator: 1=L, 0=M, 3=Q, 2=H
+  return map[ecLevel.value] || 0;
+}
+
+function scheduleGenerate() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(generateQR, 150);
+}
+
+// --- Generate QR ---
+function generateQR() {
+  const data = getQrData();
+  currentQrData = data;
+  if (!data) {
+    qrDisplay.classList.remove('has-qr');
+    qrDisplay.innerHTML = '<div class="qr-placeholder"><div class="big-icon">&#9634;</div><p>左側にデータを入力すると<br>QRコードが生成されます</p></div>';
+    btnPng.disabled = true;
+    btnSvg.disabled = true;
+    return;
+  }
+
+  try {
+    // Determine type number (0 = auto)
+    const ecMap = { L: 'L', M: 'M', Q: 'Q', H: 'H' };
+    const ecChar = ecLevel.value;
+    const qr = qrcode(0, ecChar);
+    qr.addData(data);
+    qr.make();
+
+    const moduleCount = qr.getModuleCount();
+    const size = getSize();
+    const cellSize = size / moduleCount;
+    const fg = fgColor.value;
+    const bg = bgColor.value;
+
+    // Create canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = fg;
+    for (let r = 0; r < moduleCount; r++) {
+      for (let c = 0; c < moduleCount; c++) {
+        if (qr.isDark(r, c)) {
+          ctx.fillRect(
+            Math.round(c * cellSize),
+            Math.round(r * cellSize),
+            Math.ceil(cellSize),
+            Math.ceil(cellSize)
+          );
+        }
+      }
+    }
+
+    qrDisplay.classList.add('has-qr');
+    qrDisplay.innerHTML = '';
+    qrDisplay.appendChild(canvas);
+    btnPng.disabled = false;
+    btnSvg.disabled = false;
+  } catch (err) {
+    qrDisplay.classList.remove('has-qr');
+    qrDisplay.innerHTML = '<div class="qr-placeholder"><p style="color:#ef4444">&#9888; データが長すぎるか、生成できませんでした。<br>誤り訂正レベルを下げるか、データを短くしてください。</p></div>';
+    btnPng.disabled = true;
+    btnSvg.disabled = true;
+  }
+}
+
+// --- Download PNG ---
+btnPng.addEventListener('click', function() {
+  const canvas = qrDisplay.querySelector('canvas');
+  if (!canvas) return;
+  const link = document.createElement('a');
+  link.download = 'qrcode.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+});
+
+// --- Download SVG ---
+btnSvg.addEventListener('click', function() {
+  const data = currentQrData;
+  if (!data) return;
+  try {
+    const ecChar = ecLevel.value;
+    const qr = qrcode(0, ecChar);
+    qr.addData(data);
+    qr.make();
+    const moduleCount = qr.getModuleCount();
+    const size = getSize();
+    const cellSize = size / moduleCount;
+    const fg = fgColor.value;
+    const bg = bgColor.value;
+
+    let svg = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    svg += '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size + '">\n';
+    svg += '<rect width="' + size + '" height="' + size + '" fill="' + bg + '"/>\n';
+    for (let r = 0; r < moduleCount; r++) {
+      for (let c = 0; c < moduleCount; c++) {
+        if (qr.isDark(r, c)) {
+          const x = Math.round(c * cellSize);
+          const y = Math.round(r * cellSize);
+          const w = Math.ceil(cellSize);
+          const h = Math.ceil(cellSize);
+          svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + fg + '"/>\n';
+        }
+      }
+    }
+    svg += '</svg>';
+
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const link = document.createElement('a');
+    link.download = 'qrcode.svg';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+  } catch (e) {
+    // ignore
+  }
+});
+
+// --- Batch mode ---
+const batchToggle = document.getElementById('batch-toggle-input');
+const batchContent = document.getElementById('batch-content');
+batchToggle.addEventListener('change', function() {
+  batchContent.classList.toggle('show', this.checked);
+});
+
+document.getElementById('btn-batch-generate').addEventListener('click', function() {
+  const lines = document.getElementById('batch-input').value.split('\n').map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return;
+  const results = document.getElementById('batch-results');
+  results.innerHTML = '';
+  const ecChar = ecLevel.value;
+  const size = getSize();
+  const fg = fgColor.value;
+  const bg = bgColor.value;
+
+  lines.forEach(function(line, idx) {
+    try {
+      const qr = qrcode(0, ecChar);
+      qr.addData(line);
+      qr.make();
+      const moduleCount = qr.getModuleCount();
+      const cellSize = size / moduleCount;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = fg;
+      for (let r = 0; r < moduleCount; r++) {
+        for (let c = 0; c < moduleCount; c++) {
+          if (qr.isDark(r, c)) {
+            ctx.fillRect(Math.round(c * cellSize), Math.round(r * cellSize), Math.ceil(cellSize), Math.ceil(cellSize));
+          }
+        }
+      }
+
+      const item = document.createElement('div');
+      item.className = 'batch-item';
+      item.appendChild(canvas);
+      const label = document.createElement('p');
+      label.textContent = line.length > 50 ? line.substring(0, 50) + '...' : line;
+      item.appendChild(label);
+
+      const dlBtn = document.createElement('button');
+      dlBtn.className = 'btn btn-secondary';
+      dlBtn.textContent = 'PNG';
+      dlBtn.addEventListener('click', function() {
+        const a = document.createElement('a');
+        a.download = 'qrcode_' + (idx + 1) + '.png';
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+      });
+      item.appendChild(dlBtn);
+      results.appendChild(item);
+    } catch (e) {
+      const item = document.createElement('div');
+      item.className = 'batch-item';
+      item.innerHTML = '<p style="color:#ef4444">生成エラー</p><p>' + (line.length > 50 ? line.substring(0, 50) + '...' : line) + '</p>';
+      results.appendChild(item);
+    }
+  });
+});
+
+// --- Init ---
+generateQR();
+
+})();
+</script>
+
+<!-- Structured data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "QRコード作成ツール",
+  "description": "無料でQRコードを作成・生成できるオンラインツール。URL、テキスト、メール、電話番号、WiFi、vCardに対応。",
+  "url": "https://nksapplab.com/qr-generator.html",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "NKSAPPLAB"
+  }
+}
+</script>
+</body>
+</html>
