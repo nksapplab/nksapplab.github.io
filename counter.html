@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文字数カウント - 無料オンライン文字数チェッカー | NKSAPPLAB</title>
+<meta name="description" content="テキストの文字数・単語数・行数をリアルタイムでカウント。Twitter、Instagram、ブログの文字数制限チェックに。完全無料・登録不要のオンライン文字数カウンター。">
+<meta name="keywords" content="文字数カウント,文字数,文字数 数える,文字数チェッカー,文字カウンター,ワードカウンター,Twitter 文字数,Instagram 文字数">
+<meta name="robots" content="index, follow">
+<meta name="author" content="NKSAPPLAB">
+<link rel="canonical" href="https://nksapplab.github.io/character-counter.html">
+<meta property="og:title" content="文字数カウント - 無料オンライン文字数チェッカー">
+<meta property="og:description" content="テキストの文字数・単語数・行数をリアルタイムでカウント。Twitter、Instagram、ブログの文字数制限チェックに。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nksapplab.github.io/character-counter.html">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文字数カウント - 無料オンライン文字数チェッカー">
+<meta name="twitter:description" content="テキストの文字数・単語数・行数をリアルタイムでカウント。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "文字数カウント - NKSAPPLAB",
+  "description": "テキストの文字数・単語数・行数をリアルタイムでカウント。Twitter、Instagram、ブログの文字数制限チェックに。",
+  "url": "https://nksapplab.github.io/character-counter.html",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "NKSAPPLAB",
+    "url": "https://nksapplab.github.io"
+  }
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--bg2:#f9fafb;--bg3:#f3f4f6;
+  --text:#111827;--text2:#374151;--text3:#6b7280;
+  --border:#e5e7eb;--accent:#a78bfa;--accent2:#8b5cf6;--accent-bg:#f5f3ff;
+  --card-shadow:0 1px 3px rgba(0,0,0,.08);
+  --radius:12px;
+}
+[data-theme="dark"]{
+  --bg:#0f172a;--bg2:#1e293b;--bg3:#334155;
+  --text:#f1f5f9;--text2:#cbd5e1;--text3:#94a3b8;
+  --border:#334155;--accent:#a78bfa;--accent2:#c4b5fd;--accent-bg:#1e1b4b;
+  --card-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.container{max-width:800px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+header h1{font-size:1.5rem;font-weight:700;letter-spacing:-.02em}
+header h1 span{color:var(--accent2)}
+
+.theme-toggle{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:.85rem;color:var(--text2);transition:all .2s}
+.theme-toggle:hover{border-color:var(--accent)}
+
+.textarea-wrap{position:relative;margin-bottom:16px}
+#textInput{width:100%;min-height:220px;padding:16px;font-size:1rem;line-height:1.8;border:2px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;transition:border-color .2s;font-family:inherit}
+#textInput:focus{outline:none;border-color:var(--accent)}
+#textInput::placeholder{color:var(--text3)}
+
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;align-items:center}
+.toggle-group{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text2)}
+.toggle-group input[type="checkbox"]{accent-color:var(--accent2);width:16px;height:16px;cursor:pointer}
+.btn{padding:6px 14px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text2);font-size:.85rem;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn:hover{border-color:var(--accent);color:var(--accent2)}
+.btn-accent{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+.btn-accent:hover{background:var(--accent);border-color:var(--accent)}
+.btn-danger{color:#ef4444;border-color:#fca5a5}
+.btn-danger:hover{background:#fef2f2;border-color:#ef4444}
+[data-theme="dark"] .btn-danger:hover{background:#450a0a}
+.spacer{flex:1}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;transition:all .2s}
+.stat-card:hover{border-color:var(--accent);box-shadow:var(--card-shadow)}
+.stat-value{font-size:1.75rem;font-weight:700;color:var(--accent2);line-height:1.2}
+.stat-label{font-size:.8rem;color:var(--text3);margin-top:4px}
+
+.limit-section{margin-bottom:24px}
+.limit-section h2{font-size:1rem;font-weight:600;margin-bottom:12px;color:var(--text2)}
+.limit-bar{margin-bottom:10px}
+.limit-header{display:flex;justify-content:space-between;font-size:.85rem;color:var(--text2);margin-bottom:4px}
+.limit-track{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.limit-fill{height:100%;border-radius:4px;transition:width .2s,background .2s}
+.limit-fill.ok{background:var(--accent)}
+.limit-fill.warn{background:#f59e0b}
+.limit-fill.over{background:#ef4444}
+
+.freq-section{margin-bottom:32px}
+.freq-section h2{font-size:1rem;font-weight:600;margin-bottom:12px;color:var(--text2)}
+.freq-list{display:flex;flex-wrap:wrap;gap:8px}
+.freq-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--accent-bg);border:1px solid var(--border);border-radius:20px;font-size:.85rem;color:var(--text2)}
+.freq-char{font-weight:700;color:var(--accent2);font-size:1rem}
+.freq-count{font-size:.75rem;color:var(--text3)}
+.freq-empty{font-size:.85rem;color:var(--text3)}
+
+.promo{border-top:1px solid var(--border);padding-top:32px;margin-top:40px}
+.promo h2{font-size:1.1rem;font-weight:600;margin-bottom:16px;text-align:center;color:var(--text2)}
+.promo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.promo-card{display:block;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);text-align:center;transition:all .2s}
+.promo-card:hover{border-color:var(--accent);box-shadow:var(--card-shadow);text-decoration:none}
+.promo-card .promo-name{font-weight:600;color:var(--text);font-size:.95rem}
+.promo-card .promo-price{font-size:.8rem;color:var(--text3);margin-top:4px}
+.promo-card .promo-badge{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:10px;margin-top:6px}
+.promo-badge.free{background:#d1fae5;color:#065f46}
+.promo-badge.paid{background:var(--accent-bg);color:var(--accent2)}
+[data-theme="dark"] .promo-badge.free{background:#064e3b;color:#6ee7b7}
+
+footer{text-align:center;padding:32px 16px;font-size:.8rem;color:var(--text3)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:8px;font-size:.85rem;opacity:0;transition:all .3s;pointer-events:none;z-index:100}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+@media(max-width:600px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .stat-card{padding:12px}
+  .stat-value{font-size:1.4rem}
+  header h1{font-size:1.2rem}
+  .promo-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1><span>文字数</span>カウント</h1>
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替">🌙 ダークモード</button>
+  </header>
+
+  <main>
+    <div class="textarea-wrap">
+      <textarea id="textInput" placeholder="ここにテキストを入力またはペーストしてください..." autofocus></textarea>
+    </div>
+
+    <div class="controls">
+      <label class="toggle-group"><input type="checkbox" id="toggleSpaces" checked> スペースを含む</label>
+      <label class="toggle-group"><input type="checkbox" id="toggleBreaks" checked> 改行を含む</label>
+      <div class="spacer"></div>
+      <button class="btn" id="copyBtn">結果をコピー</button>
+      <button class="btn btn-danger" id="clearBtn">クリア</button>
+    </div>
+
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-value" id="charCount">0</div><div class="stat-label">文字数</div></div>
+      <div class="stat-card"><div class="stat-value" id="charNoSpaceCount">0</div><div class="stat-label">文字数（スペース除く）</div></div>
+      <div class="stat-card"><div class="stat-value" id="wordCount">0</div><div class="stat-label">単語数</div></div>
+      <div class="stat-card"><div class="stat-value" id="lineCount">0</div><div class="stat-label">行数</div></div>
+      <div class="stat-card"><div class="stat-value" id="paragraphCount">0</div><div class="stat-label">段落数</div></div>
+      <div class="stat-card"><div class="stat-value" id="byteCount">0</div><div class="stat-label">バイト数（UTF-8）</div></div>
+      <div class="stat-card"><div class="stat-value" id="readTime">0</div><div class="stat-label">読了時間（分）</div></div>
+    </div>
+
+    <div class="limit-section">
+      <h2>SNS文字数制限</h2>
+      <div class="limit-bar">
+        <div class="limit-header"><span>Twitter/X（280文字）</span><span id="twitterCount">0 / 280</span></div>
+        <div class="limit-track"><div class="limit-fill ok" id="twitterBar" style="width:0%"></div></div>
+      </div>
+      <div class="limit-bar">
+        <div class="limit-header"><span>Twitter/X 旧制限（140文字）</span><span id="twitter140Count">0 / 140</span></div>
+        <div class="limit-track"><div class="limit-fill ok" id="twitter140Bar" style="width:0%"></div></div>
+      </div>
+      <div class="limit-bar">
+        <div class="limit-header"><span>Instagram プロフィール（150文字）</span><span id="instaCount">0 / 150</span></div>
+        <div class="limit-track"><div class="limit-fill ok" id="instaBar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="freq-section">
+      <h2>文字出現頻度 TOP10</h2>
+      <div class="freq-list" id="freqList"><span class="freq-empty">テキストを入力すると表示されます</span></div>
+    </div>
+  </main>
+
+  <section class="promo">
+    <h2>他のツールもチェック</h2>
+    <div class="promo-grid">
+      <a href="/password.html" class="promo-card">
+        <div class="promo-name">パスワード生成ツール</div>
+        <div class="promo-price">安全なパスワードを即生成</div>
+        <span class="promo-badge free">無料</span>
+      </a>
+      <a href="https://nksapplab.github.io/ai-self-pr.html" class="promo-card">
+        <div class="promo-name">AI自己PR作成</div>
+        <div class="promo-price">AIが自己PRを自動生成</div>
+        <span class="promo-badge paid">&yen;500</span>
+      </a>
+      <a href="https://nksapplab.github.io/ai-catchcopy.html" class="promo-card">
+        <div class="promo-name">AIキャッチコピー</div>
+        <div class="promo-price">売れるコピーをAIが提案</div>
+        <span class="promo-badge paid">&yen;300</span>
+      </a>
+      <a href="https://nksapplab.github.io/ai-resignation.html" class="promo-card">
+        <div class="promo-name">AI退職届</div>
+        <div class="promo-price">退職届をAIで作成</div>
+        <span class="promo-badge paid">&yen;300</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; NKSAPPLAB. All rights reserved.</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  var textInput = $("textInput");
+  var toggleSpaces = $("toggleSpaces");
+  var toggleBreaks = $("toggleBreaks");
+  var themeToggle = $("themeToggle");
+  var clearBtn = $("clearBtn");
+  var copyBtn = $("copyBtn");
+  var toast = $("toast");
+
+  // Theme
+  var savedTheme = localStorage.getItem("nks-cc-theme");
+  if(savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme:dark)").matches)){
+    document.documentElement.setAttribute("data-theme","dark");
+    themeToggle.textContent = "☀️ ライトモード";
+  }
+  themeToggle.addEventListener("click", function(){
+    var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    if(isDark){
+      document.documentElement.removeAttribute("data-theme");
+      themeToggle.textContent = "🌙 ダークモード";
+      localStorage.setItem("nks-cc-theme","light");
+    } else {
+      document.documentElement.setAttribute("data-theme","dark");
+      themeToggle.textContent = "☀️ ライトモード";
+      localStorage.setItem("nks-cc-theme","dark");
+    }
+  });
+
+  // Toast
+  var toastTimer;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 2000);
+  }
+
+  // Byte count (UTF-8)
+  function utf8ByteLength(str){
+    var len = 0;
+    for(var i = 0; i < str.length; i++){
+      var code = str.charCodeAt(i);
+      if(code <= 0x7f) len += 1;
+      else if(code <= 0x7ff) len += 2;
+      else if(code >= 0xd800 && code <= 0xdbff){ len += 4; i++; }
+      else len += 3;
+    }
+    return len;
+  }
+
+  // Limit bar update
+  function updateBar(barEl, countEl, current, max, label){
+    var pct = Math.min((current / max) * 100, 100);
+    barEl.style.width = pct + "%";
+    barEl.className = "limit-fill " + (current > max ? "over" : current > max * 0.8 ? "warn" : "ok");
+    countEl.textContent = current + " / " + max;
+  }
+
+  // Character frequency
+  function getFrequency(text){
+    var freq = {};
+    for(var i = 0; i < text.length; i++){
+      var ch = text[i];
+      if(/\s/.test(ch)) continue;
+      freq[ch] = (freq[ch] || 0) + 1;
+    }
+    var arr = [];
+    for(var k in freq) arr.push({char: k, count: freq[k]});
+    arr.sort(function(a,b){ return b.count - a.count; });
+    return arr.slice(0, 10);
+  }
+
+  // Word count - handles mixed Japanese/English
+  function countWords(text){
+    if(!text.trim()) return 0;
+    // Split by whitespace to get tokens
+    var tokens = text.trim().split(/\s+/);
+    var count = 0;
+    for(var i = 0; i < tokens.length; i++){
+      var t = tokens[i];
+      if(!t) continue;
+      // Check if token contains CJK characters
+      var hasCJK = /[\u3000-\u9fff\uf900-\ufaff\uff00-\uffef]/.test(t);
+      if(hasCJK){
+        // Count CJK chars individually, group Latin runs as words
+        var latinRun = "";
+        for(var j = 0; j < t.length; j++){
+          var c = t[j];
+          if(/[\u3000-\u9fff\uf900-\ufaff\uff00-\uffef]/.test(c)){
+            if(latinRun.trim()) count++;
+            latinRun = "";
+            count++;
+          } else {
+            latinRun += c;
+          }
+        }
+        if(latinRun.trim()) count++;
+      } else {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  // Main update
+  function update(){
+    var raw = textInput.value;
+    var text = raw;
+    var includeSpaces = toggleSpaces.checked;
+    var includeBreaks = toggleBreaks.checked;
+
+    // Base char count (always raw)
+    var charCountRaw = raw.length;
+
+    // Adjusted text for main count
+    var adjusted = raw;
+    if(!includeBreaks) adjusted = adjusted.replace(/\r?\n/g, "");
+    if(!includeSpaces) adjusted = adjusted.replace(/[\s\u3000]/g, "");
+
+    var mainCount = adjusted.length;
+    var noSpaceCount = raw.replace(/[\s\u3000]/g, "").length;
+
+    // Line count
+    var lines = raw === "" ? 0 : raw.split(/\r?\n/).length;
+
+    // Paragraph count
+    var paragraphs = raw.trim() === "" ? 0 : raw.trim().split(/\n\s*\n/).filter(function(p){ return p.trim(); }).length;
+    if(paragraphs === 0 && raw.trim()) paragraphs = 1;
+
+    // Byte count
+    var bytes = utf8ByteLength(raw);
+
+    // Reading time (Japanese ~500 chars/min)
+    var readMin = Math.max(Math.ceil(charCountRaw / 500), 0);
+    if(charCountRaw === 0) readMin = 0;
+
+    // Words
+    var words = countWords(raw);
+
+    // Update DOM
+    $("charCount").textContent = mainCount.toLocaleString();
+    $("charNoSpaceCount").textContent = noSpaceCount.toLocaleString();
+    $("wordCount").textContent = words.toLocaleString();
+    $("lineCount").textContent = lines.toLocaleString();
+    $("paragraphCount").textContent = paragraphs.toLocaleString();
+    $("byteCount").textContent = bytes.toLocaleString();
+    $("readTime").textContent = readMin === 0 ? "0" : "約" + readMin;
+
+    // Limits
+    updateBar($("twitterBar"), $("twitterCount"), mainCount, 280);
+    updateBar($("twitter140Bar"), $("twitter140Count"), mainCount, 140);
+    updateBar($("instaBar"), $("instaCount"), mainCount, 150);
+
+    // Frequency
+    var freq = getFrequency(raw);
+    var freqEl = $("freqList");
+    if(freq.length === 0){
+      freqEl.innerHTML = '<span class="freq-empty">テキストを入力すると表示されます</span>';
+    } else {
+      var html = "";
+      for(var i = 0; i < freq.length; i++){
+        html += '<span class="freq-chip"><span class="freq-char">' + escHtml(freq[i].char) + '</span><span class="freq-count">' + freq[i].count + '回</span></span>';
+      }
+      freqEl.innerHTML = html;
+    }
+  }
+
+  function escHtml(s){
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  textInput.addEventListener("input", update);
+  toggleSpaces.addEventListener("change", update);
+  toggleBreaks.addEventListener("change", update);
+
+  clearBtn.addEventListener("click", function(){
+    textInput.value = "";
+    update();
+    textInput.focus();
+    showToast("クリアしました");
+  });
+
+  copyBtn.addEventListener("click", function(){
+    var raw = textInput.value;
+    var includeSpaces = toggleSpaces.checked;
+    var includeBreaks = toggleBreaks.checked;
+    var adjusted = raw;
+    if(!includeBreaks) adjusted = adjusted.replace(/\r?\n/g,"");
+    if(!includeSpaces) adjusted = adjusted.replace(/[\s\u3000]/g,"");
+
+    var result = [
+      "文字数: " + adjusted.length,
+      "文字数（スペース除く）: " + raw.replace(/[\s\u3000]/g,"").length,
+      "単語数: " + countWords(raw),
+      "行数: " + (raw === "" ? 0 : raw.split(/\r?\n/).length),
+      "段落数: " + $("paragraphCount").textContent,
+      "バイト数（UTF-8）: " + utf8ByteLength(raw),
+      "読了時間: " + $("readTime").textContent + "分"
+    ].join("\n");
+
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(result).then(function(){
+        showToast("コピーしました");
+      });
+    } else {
+      showToast("コピーに失敗しました");
+    }
+  });
+
+  // Restore text from session
+  var saved = sessionStorage.getItem("nks-cc-text");
+  if(saved){ textInput.value = saved; update(); }
+  textInput.addEventListener("input", function(){ sessionStorage.setItem("nks-cc-text", textInput.value); });
+
+  update();
+})();
+</script>
+</body>
+</html>
