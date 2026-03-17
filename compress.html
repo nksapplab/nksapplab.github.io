@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画像圧縮 - 無料オンライン画像軽量化ツール | NKSAPPLAB</title>
+<meta name="description" content="PNG・JPG・GIF画像をブラウザで圧縮。WebP変換にも対応。アップロード不要、完全無料の画像圧縮ツール。">
+<meta name="keywords" content="画像圧縮,画像軽量化,WebP変換,PNG圧縮,JPG圧縮,オンライン画像圧縮,無料,ブラウザ">
+<meta property="og:title" content="画像圧縮 - 無料オンライン画像軽量化ツール">
+<meta property="og:description" content="PNG・JPG・GIF画像をブラウザで圧縮。WebP変換にも対応。アップロード不要、完全無料。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://nksapplab.com/tools/image-compressor">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--bg2:#f8f9fa;--bg3:#f1f3f5;
+  --text:#1a1a2e;--text2:#495057;--text3:#868e96;
+  --border:#dee2e6;--border2:#ced4da;
+  --primary:#a78bfa;--primary-dark:#7c5cbf;--primary-light:#ede9fe;
+  --green:#10b981;--green-bg:#d1fae5;
+  --red:#ef4444;--red-bg:#fee2e2;
+  --shadow:0 1px 3px rgba(0,0,0,.08);
+  --shadow2:0 4px 12px rgba(0,0,0,.1);
+  --radius:12px;
+}
+[data-theme="dark"]{
+  --bg:#0f0f1a;--bg2:#1a1a2e;--bg3:#252540;
+  --text:#e8e8f0;--text2:#a0a0b8;--text3:#6c6c88;
+  --border:#2a2a44;--border2:#3a3a55;
+  --primary:#a78bfa;--primary-dark:#c4b0ff;--primary-light:#2a2050;
+  --green:#34d399;--green-bg:#064e3b;
+  --red:#f87171;--red-bg:#450a0a;
+  --shadow:0 1px 3px rgba(0,0,0,.3);
+  --shadow2:0 4px 12px rgba(0,0,0,.4);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Header */
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 0}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:14px;font-weight:700;color:var(--primary)}
+.header-right{display:flex;align-items:center;gap:12px}
+.theme-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:16px;line-height:1;color:var(--text)}
+.theme-toggle:hover{border-color:var(--primary)}
+
+/* Main */
+.container{max-width:1100px;margin:0 auto;padding:20px}
+h1{font-size:28px;font-weight:800;margin-bottom:6px;background:linear-gradient(135deg,var(--primary),#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:var(--text2);font-size:15px;margin-bottom:24px}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.badge{display:inline-flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2)}
+.badge svg{width:14px;height:14px}
+
+/* Controls */
+.controls{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:20px;align-items:end}
+.control-group{flex:1;min-width:180px}
+.control-group label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:6px}
+.quality-display{font-size:24px;font-weight:700;color:var(--primary)}
+input[type="range"]{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:var(--bg3);outline:none;margin-top:8px}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--primary);cursor:pointer;box-shadow:var(--shadow2)}
+select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:14px;cursor:pointer}
+select:focus{outline:none;border-color:var(--primary)}
+
+/* Drop Zone */
+.dropzone{border:2px dashed var(--border2);border-radius:var(--radius);padding:48px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2);margin-bottom:20px}
+.dropzone:hover,.dropzone.dragover{border-color:var(--primary);background:var(--primary-light)}
+.dropzone-icon{font-size:48px;margin-bottom:12px;opacity:.6}
+.dropzone-text{font-size:16px;font-weight:600;color:var(--text)}
+.dropzone-sub{font-size:13px;color:var(--text3);margin-top:4px}
+.dropzone input{display:none}
+
+/* Stats */
+.stats-bar{display:none;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.stats-bar.active{display:flex}
+.stat{text-align:center}
+.stat-val{font-size:22px;font-weight:700}
+.stat-val.green{color:var(--green)}
+.stat-label{font-size:12px;color:var(--text3)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{opacity:.9}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Grid */
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:40px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .2s}
+.card:hover{box-shadow:var(--shadow2)}
+.card-preview{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.card-preview-item{background:var(--bg3);position:relative;aspect-ratio:4/3;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.card-preview-item img{max-width:100%;max-height:100%;object-fit:contain}
+.card-preview-label{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px}
+.card-body{padding:14px}
+.card-filename{font-size:14px;font-weight:600;margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-sizes{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:10px}
+.size-original{color:var(--text3);text-decoration:line-through}
+.size-arrow{color:var(--text3)}
+.size-compressed{font-weight:600;color:var(--text)}
+.card-saving{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:700}
+.card-saving.positive{background:var(--green-bg);color:var(--green)}
+.card-saving.negative{background:var(--red-bg);color:var(--red)}
+.card-actions{display:flex;gap:8px;margin-top:10px}
+.card-actions .btn{padding:6px 14px;font-size:13px;flex:1;justify-content:center}
+
+/* Processing indicator */
+.processing{display:none;text-align:center;padding:24px;color:var(--text2)}
+.processing.active{display:block}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Footer */
+.footer{border-top:1px solid var(--border);padding:32px 20px;margin-top:40px}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer h3{font-size:16px;margin-bottom:12px;color:var(--text)}
+.footer p{font-size:14px;color:var(--text2);margin-bottom:8px;line-height:1.7}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:20px 0}
+.tool-link{display:block;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;transition:all .15s}
+.tool-link:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow2);text-decoration:none}
+.tool-link-title{font-size:14px;font-weight:600;color:var(--text)}
+.tool-link-desc{font-size:12px;color:var(--text3);margin-top:2px}
+.faq{margin-top:24px}
+.faq details{border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--bg2)}
+.faq summary{padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer;color:var(--text)}
+.faq details p{padding:0 16px 12px;font-size:14px;color:var(--text2)}
+.copyright{text-align:center;color:var(--text3);font-size:12px;margin-top:24px}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:var(--bg);border-radius:var(--radius);max-width:90vw;max-height:90vh;overflow:auto;position:relative}
+.modal img{display:block;max-width:100%;max-height:85vh;object-fit:contain}
+.modal-close{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+@media(max-width:640px){
+  h1{font-size:22px}
+  .controls{flex-direction:column;gap:14px}
+  .control-group{min-width:100%}
+  .results-grid{grid-template-columns:1fr}
+  .stats-bar{flex-direction:column;text-align:center}
+  .header-inner{flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">NKSAPPLAB</div>
+    <div class="header-right">
+      <a href="https://nksapplab.com" style="font-size:13px;color:var(--text3)">他のツール</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="テーマ切替">🌙</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <h1>画像圧縮 &amp; WebP変換ツール</h1>
+  <p class="subtitle">ブラウザだけで画像を圧縮・変換。サーバーへのアップロード一切なし、完全無料。</p>
+
+  <div class="badge-row">
+    <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>サーバー送信なし</span>
+    <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>一括処理対応</span>
+    <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>完全無料</span>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="control-group">
+      <label>圧縮品質</label>
+      <span class="quality-display" id="qualityDisplay">80%</span>
+      <input type="range" id="qualitySlider" min="10" max="100" value="80" oninput="updateQuality(this.value)">
+    </div>
+    <div class="control-group">
+      <label>出力フォーマット</label>
+      <select id="formatSelect">
+        <option value="original">元の形式を維持</option>
+        <option value="webp" selected>WebP（推奨・最小）</option>
+        <option value="jpeg">JPEG</option>
+        <option value="png">PNG</option>
+      </select>
+    </div>
+    <div class="control-group" style="flex:0;min-width:auto">
+      <label>&nbsp;</label>
+      <button class="btn btn-primary" id="reprocessBtn" onclick="reprocessAll()" disabled>再圧縮</button>
+    </div>
+  </div>
+
+  <!-- Drop Zone -->
+  <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+    <div class="dropzone-icon">📁</div>
+    <div class="dropzone-text">ここに画像をドラッグ＆ドロップ</div>
+    <div class="dropzone-sub">またはクリックしてファイルを選択（PNG, JPG, GIF, BMP対応）</div>
+    <input type="file" id="fileInput" accept="image/png,image/jpeg,image/gif,image/bmp,image/webp" multiple>
+  </div>
+
+  <!-- Processing -->
+  <div class="processing" id="processing">
+    <span class="spinner"></span>圧縮中...
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="statsBar">
+    <div class="stat">
+      <div class="stat-val" id="statCount">0</div>
+      <div class="stat-label">ファイル数</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="statOriginal">0 KB</div>
+      <div class="stat-label">元のサイズ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="statCompressed">0 KB</div>
+      <div class="stat-label">圧縮後</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val green" id="statSaving">0%</div>
+      <div class="stat-label">削減率</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="downloadAll()">💾 すべてダウンロード</button>
+      <button class="btn btn-outline" onclick="clearAll()">🗑 クリア</button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-grid" id="resultsGrid"></div>
+</main>
+
+<!-- Image Preview Modal -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('active')">✕</button>
+    <img id="modalImg" src="" alt="プレビュー">
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <h3>💡 画像圧縮の基礎知識</h3>
+    <p>画像ファイルはWebサイトの読み込み速度に大きく影響します。適切な圧縮を行うことで、ページの表示速度を改善し、ユーザー体験とSEOの両方を向上させることができます。</p>
+    <p><strong>WebP形式</strong>はGoogleが開発した次世代画像フォーマットで、JPEGと比べて25〜35%小さいファイルサイズを実現しつつ、同等の画質を維持します。現在、主要なブラウザすべてでサポートされています。</p>
+
+    <h3 style="margin-top:24px">🛠 その他の無料ツール</h3>
+    <div class="tools-grid">
+      <a class="tool-link" href="https://nksapplab.com/tools/color-picker">
+        <div class="tool-link-title">🎨 カラーピッカー</div>
+        <div class="tool-link-desc">HEX・RGB・HSL変換ツール</div>
+      </a>
+      <a class="tool-link" href="https://nksapplab.com/tools/json-formatter">
+        <div class="tool-link-title">📋 JSON整形</div>
+        <div class="tool-link-desc">JSONの整形・検証ツール</div>
+      </a>
+      <a class="tool-link" href="https://nksapplab.com/tools/qr-generator">
+        <div class="tool-link-title">📱 QRコード生成</div>
+        <div class="tool-link-desc">無料QRコードジェネレーター</div>
+      </a>
+      <a class="tool-link" href="https://nksapplab.com/products">
+        <div class="tool-link-title">📲 iOSアプリ</div>
+        <div class="tool-link-desc">NKSAPPLABのアプリ一覧</div>
+      </a>
+    </div>
+
+    <div class="faq">
+      <h3 style="margin-bottom:12px">❓ よくある質問</h3>
+      <details>
+        <summary>画像はサーバーにアップロードされますか？</summary>
+        <p>いいえ。すべての処理はお使いのブラウザ内で完結します。画像データが外部に送信されることは一切ありません。安心してご利用ください。</p>
+      </details>
+      <details>
+        <summary>WebPとは何ですか？</summary>
+        <p>WebPはGoogleが開発した画像フォーマットです。JPEGやPNGと比べてファイルサイズが大幅に小さくなり、Webサイトの表示速度改善に効果的です。現在の主要ブラウザすべてで対応しています。</p>
+      </details>
+      <details>
+        <summary>圧縮品質はどの程度に設定すべきですか？</summary>
+        <p>一般的なWebサイト用途では70〜85%がおすすめです。見た目の劣化がほぼ分からない範囲で、大幅なファイルサイズ削減が期待できます。写真の品質を最優先する場合は90%以上を推奨します。</p>
+      </details>
+      <details>
+        <summary>対応している画像形式は？</summary>
+        <p>PNG、JPG（JPEG）、GIF、BMP、WebPに対応しています。出力形式はWebP、JPEG、PNGから選択でき、元の形式を維持することも可能です。</p>
+      </details>
+      <details>
+        <summary>一度に何枚まで処理できますか？</summary>
+        <p>制限は設けていませんが、ブラウザのメモリに依存します。通常、数十枚程度であれば問題なく処理できます。大量の画像を処理する場合は、10〜20枚ずつに分けることをおすすめします。</p>
+      </details>
+    </div>
+
+    <p class="copyright">&copy; 2024 NKSAPPLAB. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+/* State */
+const state = { files: [], results: [] };
+
+/* Theme */
+function toggleTheme() {
+  const btn = document.querySelector('.theme-toggle');
+  if (document.documentElement.getAttribute('data-theme') === 'dark') {
+    document.documentElement.removeAttribute('data-theme');
+    btn.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    btn.textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
+  }
+}
+if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && matchMedia('(prefers-color-scheme:dark)').matches)) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.querySelector('.theme-toggle').textContent = '☀️';
+}
+
+/* Quality slider */
+function updateQuality(val) {
+  document.getElementById('qualityDisplay').textContent = val + '%';
+}
+
+/* Drag & Drop */
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+
+['dragenter','dragover'].forEach(e => dropzone.addEventListener(e, ev => { ev.preventDefault(); dropzone.classList.add('dragover'); }));
+['dragleave','drop'].forEach(e => dropzone.addEventListener(e, ev => { ev.preventDefault(); dropzone.classList.remove('dragover'); }));
+dropzone.addEventListener('drop', ev => { handleFiles(ev.dataTransfer.files); });
+fileInput.addEventListener('change', ev => { handleFiles(ev.target.files); fileInput.value = ''; });
+
+/* Format helpers */
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(2) + ' MB';
+}
+
+function getMimeType(file, selectedFormat) {
+  if (selectedFormat === 'original') {
+    const type = file.type;
+    if (type === 'image/gif' || type === 'image/bmp') return 'image/png';
+    return type || 'image/jpeg';
+  }
+  return 'image/' + selectedFormat;
+}
+
+function getExtension(mimeType) {
+  const map = { 'image/webp': '.webp', 'image/jpeg': '.jpg', 'image/png': '.png' };
+  return map[mimeType] || '.jpg';
+}
+
+/* Core compression */
+function compressImage(file, quality, format) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const mime = getMimeType(file, format);
+      const q = mime === 'image/png' ? undefined : quality / 100;
+      canvas.toBlob(blob => {
+        if (blob) {
+          resolve({ blob, mime, width: img.width, height: img.height });
+        } else {
+          reject(new Error('圧縮に失敗しました'));
+        }
+      }, mime, q);
+      URL.revokeObjectURL(img.src);
+    };
+    img.onerror = () => { URL.revokeObjectURL(img.src); reject(new Error('画像の読み込みに失敗しました')); };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+/* Process files */
+async function handleFiles(fileList) {
+  const validTypes = ['image/png','image/jpeg','image/gif','image/bmp','image/webp'];
+  const files = Array.from(fileList).filter(f => validTypes.includes(f.type));
+  if (!files.length) return;
+
+  state.files.push(...files);
+  const quality = parseInt(document.getElementById('qualitySlider').value);
+  const format = document.getElementById('formatSelect').value;
+
+  document.getElementById('processing').classList.add('active');
+
+  for (const file of files) {
+    try {
+      const result = await compressImage(file, quality, format);
+      const originalUrl = URL.createObjectURL(file);
+      const compressedUrl = URL.createObjectURL(result.blob);
+      const entry = {
+        file,
+        originalUrl,
+        compressedUrl,
+        originalSize: file.size,
+        compressedSize: result.blob.size,
+        blob: result.blob,
+        mime: result.mime,
+        width: result.width,
+        height: result.height
+      };
+      state.results.push(entry);
+      renderCard(entry, state.results.length - 1);
+    } catch (err) {
+      console.error('Error processing', file.name, err);
+    }
+  }
+
+  document.getElementById('processing').classList.remove('active');
+  document.getElementById('reprocessBtn').disabled = false;
+  updateStats();
+}
+
+/* Reprocess all with new settings */
+async function reprocessAll() {
+  if (!state.files.length) return;
+  const quality = parseInt(document.getElementById('qualitySlider').value);
+  const format = document.getElementById('formatSelect').value;
+
+  document.getElementById('processing').classList.add('active');
+  document.getElementById('resultsGrid').innerHTML = '';
+
+  // Clean old URLs
+  state.results.forEach(r => { URL.revokeObjectURL(r.originalUrl); URL.revokeObjectURL(r.compressedUrl); });
+  state.results = [];
+
+  const allFiles = [...state.files];
+  for (const file of allFiles) {
+    try {
+      const result = await compressImage(file, quality, format);
+      const originalUrl = URL.createObjectURL(file);
+      const compressedUrl = URL.createObjectURL(result.blob);
+      const entry = {
+        file,
+        originalUrl,
+        compressedUrl,
+        originalSize: file.size,
+        compressedSize: result.blob.size,
+        blob: result.blob,
+        mime: result.mime,
+        width: result.width,
+        height: result.height
+      };
+      state.results.push(entry);
+      renderCard(entry, state.results.length - 1);
+    } catch (err) {
+      console.error('Error reprocessing', file.name, err);
+    }
+  }
+
+  document.getElementById('processing').classList.remove('active');
+  updateStats();
+}
+
+/* Render card */
+function renderCard(entry, index) {
+  const grid = document.getElementById('resultsGrid');
+  const saving = ((1 - entry.compressedSize / entry.originalSize) * 100);
+  const savingClass = saving >= 0 ? 'positive' : 'negative';
+  const savingText = saving >= 0 ? `-${saving.toFixed(1)}%` : `+${Math.abs(saving).toFixed(1)}%`;
+  const baseName = entry.file.name.replace(/\.[^.]+$/, '');
+  const ext = getExtension(entry.mime);
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-preview">
+      <div class="card-preview-item" onclick="openModal('${entry.originalUrl}')">
+        <span class="card-preview-label">元画像</span>
+        <img src="${entry.originalUrl}" alt="元画像" loading="lazy">
+      </div>
+      <div class="card-preview-item" onclick="openModal('${entry.compressedUrl}')">
+        <span class="card-preview-label">圧縮後</span>
+        <img src="${entry.compressedUrl}" alt="圧縮後" loading="lazy">
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-filename" title="${entry.file.name}">${entry.file.name}</div>
+      <div class="card-sizes">
+        <span class="size-original">${formatSize(entry.originalSize)}</span>
+        <span class="size-arrow">→</span>
+        <span class="size-compressed">${formatSize(entry.compressedSize)}</span>
+        <span class="card-saving ${savingClass}">${savingText}</span>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${entry.width}×${entry.height}px · ${entry.mime.split('/')[1].toUpperCase()}</div>
+      <div class="card-actions">
+        <button class="btn btn-primary" onclick="downloadOne(${index})">💾 ダウンロード</button>
+        <button class="btn btn-outline" onclick="removeOne(${index})">🗑</button>
+      </div>
+    </div>
+  `;
+  grid.appendChild(card);
+}
+
+/* Update stats */
+function updateStats() {
+  const bar = document.getElementById('statsBar');
+  if (!state.results.length) { bar.classList.remove('active'); return; }
+  bar.classList.add('active');
+
+  const totalOrig = state.results.reduce((s, r) => s + r.originalSize, 0);
+  const totalComp = state.results.reduce((s, r) => s + r.compressedSize, 0);
+  const saving = ((1 - totalComp / totalOrig) * 100);
+
+  document.getElementById('statCount').textContent = state.results.length;
+  document.getElementById('statOriginal').textContent = formatSize(totalOrig);
+  document.getElementById('statCompressed').textContent = formatSize(totalComp);
+  const savingEl = document.getElementById('statSaving');
+  savingEl.textContent = (saving >= 0 ? '-' : '+') + Math.abs(saving).toFixed(1) + '%';
+  savingEl.className = 'stat-val ' + (saving >= 0 ? 'green' : '');
+}
+
+/* Download */
+function downloadOne(index) {
+  const entry = state.results[index];
+  if (!entry) return;
+  const baseName = entry.file.name.replace(/\.[^.]+$/, '');
+  const ext = getExtension(entry.mime);
+  const a = document.createElement('a');
+  a.href = entry.compressedUrl;
+  a.download = baseName + '_compressed' + ext;
+  a.click();
+}
+
+function downloadAll() {
+  state.results.forEach((entry, i) => {
+    setTimeout(() => downloadOne(i), i * 200);
+  });
+}
+
+/* Remove */
+function removeOne(index) {
+  const entry = state.results[index];
+  if (!entry) return;
+  URL.revokeObjectURL(entry.originalUrl);
+  URL.revokeObjectURL(entry.compressedUrl);
+  // Remove from files array too
+  const fileIdx = state.files.indexOf(entry.file);
+  if (fileIdx > -1) state.files.splice(fileIdx, 1);
+  state.results.splice(index, 1);
+  rerenderAll();
+}
+
+function clearAll() {
+  state.results.forEach(r => { URL.revokeObjectURL(r.originalUrl); URL.revokeObjectURL(r.compressedUrl); });
+  state.files = [];
+  state.results = [];
+  document.getElementById('resultsGrid').innerHTML = '';
+  document.getElementById('reprocessBtn').disabled = true;
+  updateStats();
+}
+
+function rerenderAll() {
+  document.getElementById('resultsGrid').innerHTML = '';
+  state.results.forEach((entry, i) => renderCard(entry, i));
+  updateStats();
+}
+
+/* Modal */
+function openModal(src) {
+  document.getElementById('modalImg').src = src;
+  document.getElementById('modal').classList.add('active');
+}
+function closeModal(ev) {
+  if (ev.target === document.getElementById('modal') || ev.target.classList.contains('modal-close')) {
+    document.getElementById('modal').classList.remove('active');
+  }
+}
+document.addEventListener('keydown', ev => {
+  if (ev.key === 'Escape') document.getElementById('modal').classList.remove('active');
+});
+</script>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "画像圧縮 - 無料オンライン画像軽量化ツール",
+  "description": "PNG・JPG・GIF画像をブラウザで圧縮。WebP変換にも対応。アップロード不要、完全無料。",
+  "url": "https://nksapplab.com/tools/image-compressor",
+  "applicationCategory": "Utility",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "NKSAPPLAB",
+    "url": "https://nksapplab.com"
+  }
+}
+</script>
+</body>
+</html>
