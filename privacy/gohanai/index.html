@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gohan AI - プライバシーポリシー</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.8; color: #333; background-color: #f9f9f9; padding: 20px;
+        }
+        .container {
+            max-width: 720px; margin: 0 auto; background: #fff;
+            padding: 40px 32px; border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+        .app-header {
+            display: flex; align-items: center; gap: 16px;
+            margin-bottom: 32px; padding-bottom: 24px;
+            border-bottom: 2px solid #fde68a;
+        }
+        .app-icon {
+            width: 64px; height: 64px; border-radius: 14px;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; flex-shrink: 0;
+        }
+        .app-header h1 { font-size: 1.5em; color: #1a1a1a; }
+        .app-header p { font-size: 0.9em; color: #666; margin: 0; }
+        h2 {
+            font-size: 1.15em; margin-top: 32px; margin-bottom: 12px;
+            padding-bottom: 6px; border-bottom: 2px solid #fde68a; color: #1a1a1a;
+        }
+        p { margin-bottom: 12px; }
+        ul { margin: 8px 0 12px 24px; }
+        li { margin-bottom: 4px; }
+        a { color: #d97706; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .effective-date {
+            margin-top: 40px; padding-top: 20px;
+            border-top: 1px solid #e8e8e8; font-size: 0.9em; color: #888;
+        }
+        .footer {
+            margin-top: 32px; padding-top: 16px;
+            border-top: 1px solid #e8e8e8; font-size: 0.85em; color: #aaa;
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+        }
+        .footer a { color: #d97706; }
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .container { padding: 24px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+            <div class="app-icon">&#x1F35C;</div>
+            <div>
+                <h1>プライバシーポリシー</h1>
+                <p>Gohan AI（com.nksapplab.gohanai）</p>
+            </div>
+        </div>
+
+        <h2>はじめに</h2>
+        <p>本プライバシーポリシーは、iOSアプリ「Gohan AI」（以下「本アプリ」）における個人情報および利用者データの取り扱いについて説明するものです。開発者は nksapplab です。</p>
+        <p>本アプリをご利用いただくことで、本ポリシーの内容に同意いただいたものとみなします。</p>
+
+        <h2>収集するデータ</h2>
+        <p>本アプリは以下のデータを扱います。</p>
+        <ul>
+            <li><strong>食事写真：</strong>AI栄養分析のために使用します。画像はGoogle Gemini APIに送信され、分析完了後、開発者のサーバーには保存されません。</li>
+            <li><strong>栄養データ：</strong>食事から推定した栄養素情報（カロリー、たんぱく質、脂質、炭水化物など）を記録します。</li>
+            <li><strong>体重データ：</strong>ユーザーが入力した体重・体組成データを記録します。</li>
+            <li><strong>HealthKitデータ：</strong>ユーザーの許可を得た場合に限り、Apple HealthKitから歩数・アクティビティ等のデータを読み書きします。</li>
+        </ul>
+
+        <h2>データの保存場所</h2>
+        <p>本アプリで収集・記録されたデータは、<strong>お使いの端末内にのみローカル保存</strong>されます（UserDefaults およびローカルデータベース）。</p>
+        <ul>
+            <li>クラウドサーバーへのアップロードは行いません。</li>
+            <li>開発者がユーザーの栄養・体重・HealthKitデータにアクセスすることはありません。</li>
+            <li>アプリを削除すると、保存されたデータはすべて端末から削除されます。</li>
+        </ul>
+
+        <h2>第三者サービスの利用</h2>
+        <p>本アプリは以下の外部サービスを利用しています。</p>
+        <ul>
+            <li><strong>Google Gemini API：</strong>食事写真の画像分析・栄養推定に使用します。画像データはAPIに送信されますが、開発者側で保存・蓄積することはありません。詳細は <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Google AI利用規約</a> をご参照ください。</li>
+            <li><strong>Open Food Facts：</strong>食品データベースとして食品の栄養情報の参照に使用します。個人情報は送信されません。</li>
+            <li><strong>FatSecret：</strong>食品の栄養データ参照に使用します。個人情報は送信されません。</li>
+            <li><strong>USDA FoodData Central：</strong>食品の栄養データ参照に使用します。個人情報は送信されません。</li>
+        </ul>
+
+        <h2>分析ツール・広告</h2>
+        <p>本アプリは、サードパーティの分析ツール、トラッキングツール、および広告SDKを一切使用していません。ユーザーの行動データの収集や広告配信は行っていません。</p>
+
+        <h2>HealthKitについて</h2>
+        <p>HealthKitデータは、Apple HealthKitの利用規約に従い、健康・フィットネス目的にのみ使用します。HealthKitから取得したデータを広告や第三者への提供目的に使用することはありません。</p>
+
+        <h2>第三者へのデータ提供</h2>
+        <p>本アプリは、上記のAI分析機能および食品データ取得に必要な通信を除き、ユーザーのデータを第三者に提供・共有・販売することはありません。</p>
+
+        <h2>お子様のプライバシー</h2>
+        <p>本アプリは13歳未満のお子様を対象としておらず、意図的にお子様から個人情報を収集することはありません。</p>
+
+        <h2>プライバシーポリシーの変更</h2>
+        <p>本プライバシーポリシーは、必要に応じて更新されることがあります。変更があった場合は、本ページにて更新内容を公開します。重要な変更の場合はアプリ内でもお知らせします。</p>
+
+        <h2>お問い合わせ</h2>
+        <p>本ポリシーに関するご質問は、以下までお問い合わせください。</p>
+        <p>nksapplab<br>
+        メール: <a href="mailto:nksapplab@gmail.com">nksapplab@gmail.com</a></p>
+
+        <p class="effective-date">制定日: 2026年3月28日<br>最終更新日: 2026年3月28日</p>
+
+        <div class="footer">
+            <span>&copy; 2026 nksapplab</span>
+            <span>
+                <a href="../../terms/gohanai/">利用規約</a> &nbsp;|&nbsp;
+                <a href="../../support/gohanai/">サポート</a>
+            </span>
+        </div>
+    </div>
+</body>
+</html>
